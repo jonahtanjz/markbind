@@ -1,0 +1,15 @@
+@media (min-width: 576px) {
+    .nav-menu-bar {
+        display: none;
+    }
+}
+
+.nav-menu-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.toggle-page-nav-button {
+    float: right;
+}

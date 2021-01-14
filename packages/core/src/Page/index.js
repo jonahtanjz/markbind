@@ -454,6 +454,7 @@ class Page {
     let content = variableProcessor.renderWithSiteVariables(this.pageConfig.sourcePath, pageSources);
     content = await nodeProcessor.process(this.pageConfig.sourcePath, content);
     this.processFrontMatter(nodeProcessor.frontMatter);
+    content = Page.addNavMenuBar(content);
     content = Page.addScrollToTopButton(content);
     content = pluginManager.postRender(this.frontMatter, content);
     const pageContent = content;
@@ -480,6 +481,13 @@ class Page {
     await externalManager.generateDependencies(pageSources.getDynamicIncludeSrc(), this.includedFiles);
 
     this.collectHeadingsAndKeywords(pageContent);
+  }
+
+  static addNavMenuBar(pageData) {
+    const menuBar = '<div class="nav-menu-bar fixed-header-padding">'
+    + '<span class="toggle-site-nav-button">Site Nav</span>'
+    + '<span class="toggle-page-nav-button">Page Nav</span></div>';
+    return `${pageData}\n${menuBar}`;
   }
 
   static addScrollToTopButton(pageData) {
