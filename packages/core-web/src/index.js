@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import MarkBindVue from '@markbind/vue-components/src';
 import initScrollTopButton from './scrollTopButton';
+import { initNavMenuBar } from './navMenuBar';
 import './styles/index.css';
 
 Vue.use(MarkBindVue);
@@ -37,7 +38,15 @@ function detectAndApplyFixedHeaderStyles() {
 
   const headerHeight = headerSelector.height();
   const bufferHeight = 1;
-  insertCss(`.fixed-header-padding { padding-top: ${headerHeight}px !important }`);
+  const navMenuBarHeight = 50;
+  insertCss(`.fixed-header-padding { 
+        padding-top: ${headerHeight}px !important; 
+      }
+      @media (max-width: 992px) {
+        .fixed-header-padding { 
+          padding-top: ${headerHeight + navMenuBarHeight}px !important;
+        } 
+      }`);
   insertCss(
     `span.anchor {
     position: relative;
@@ -151,5 +160,6 @@ window.popoverInnerGetters = {
 window.tooltipInnerContentGetter = makeMbSlotGetter('_content');
 
 initScrollTopButton();
+initNavMenuBar();
 
 export default { setup, setupWithSearch };

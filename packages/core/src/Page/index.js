@@ -347,7 +347,7 @@ class Page {
     const headingStack = [];
     Object.keys(this.navigableHeadings).forEach((key) => {
       const currentHeadingLevel = this.navigableHeadings[key].level;
-      const currentHeadingHTML = `<a class="nav-link py-1" href="#${key}">`
+      const currentHeadingHTML = `<a onclick="closePageNav();" class="nav-link py-1" href="#${key}">`
         + `${this.navigableHeadings[key].text}&#x200E;</a>\n`;
       const nestedHeadingHTML = '<nav class="nav nav-pills flex-column my-0 nested no-flex-wrap">\n'
         + `${currentHeadingHTML}`;
@@ -415,7 +415,9 @@ class Page {
       return `${pageNavTitleHtml}\n`
           + `<nav id="${PAGE_NAV_ID}" class="nav nav-pills flex-column my-0 small no-flex-wrap">\n`
           + `${pageNavHeadingHTML}\n`
-          + '</nav>\n';
+          + '</nav>\n'
+          + '<script>initPageNavButton();</script>'
+          + '<script>showNavMenuToggleButtons();</script>';
     }
 
     return '';
@@ -484,9 +486,9 @@ class Page {
   }
 
   static addNavMenuBar(pageData) {
-    const menuBar = '<div class="nav-menu-bar fixed-header-padding">'
-    + '<span class="toggle-site-nav-button">Site Nav</span>'
-    + '<span class="toggle-page-nav-button">Page Nav</span></div>';
+    const menuBar = '<div id="nav-menu-bar">'
+    + '<span id="toggle-site-nav-button" onclick="toggleSiteNav()" class="glyphicon"></span>'
+    + '<span id="toggle-page-nav-button" onclick="togglePageNav()" class="glyphicon"></span></div>';
     return `${pageData}\n${menuBar}`;
   }
 
