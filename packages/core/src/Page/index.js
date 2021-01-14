@@ -416,8 +416,7 @@ class Page {
           + `<nav id="${PAGE_NAV_ID}" class="nav nav-pills flex-column my-0 small no-flex-wrap">\n`
           + `${pageNavHeadingHTML}\n`
           + '</nav>\n'
-          + '<script>initPageNavButton();</script>'
-          + '<script>showNavMenuToggleButtons();</script>';
+          + '<script>initPageNavButton();</script>';
     }
 
     return '';
@@ -464,7 +463,7 @@ class Page {
     pluginManager.collectPluginPageNjkAssets(this.frontMatter, content, this.asset);
 
     await layoutManager.generateLayoutIfNeeded(this.layout);
-    const pageNav = this.buildPageNav(content);
+    const pageNav = Page.addNavMenuScript(this.buildPageNav(content));
     content = layoutManager.combineLayoutWithPage(this.layout, content, pageNav, this.includedFiles);
     this.asset = {
       ...this.asset,
@@ -490,6 +489,11 @@ class Page {
     + '<span id="toggle-site-nav-button" onclick="toggleSiteNav()" class="glyphicon"></span>'
     + '<span id="toggle-page-nav-button" onclick="togglePageNav()" class="glyphicon"></span></div>';
     return `${pageData}\n${menuBar}`;
+  }
+
+  static addNavMenuScript(pageData) {
+    const script = '<script>showNavMenuToggleButtons();</script>';
+    return `${pageData}\n${script}`;
   }
 
   static addScrollToTopButton(pageData) {
