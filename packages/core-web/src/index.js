@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import MarkBindVue from '@markbind/vue-components/src';
 import initScrollTopButton from './scrollTopButton';
-import { initNavMenuBar } from './navMenuBar';
+import initNavMenuBar from './navMenuBar';
 import './styles/index.css';
 
 Vue.use(MarkBindVue);

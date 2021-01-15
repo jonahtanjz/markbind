@@ -24,6 +24,7 @@
     border-bottom: 1px solid #C1C1C1;
     height: 50px;
     background: #F8F8F8;
+    display: none;
 }
 
 #toggle-site-nav-button {
