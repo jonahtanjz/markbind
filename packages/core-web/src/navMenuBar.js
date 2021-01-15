@@ -16,6 +16,15 @@ function toggleSiteNav() {
   }
 }
 
+function closePageNav() {
+  document.getElementById('page-nav').classList.remove('nav-menu-open');
+  document.getElementById('toggle-page-nav-button').classList.remove('nav-menu-close-icon');
+  if (navMenuStates.siteNav) {
+    document.getElementById('toggle-site-nav-button').style.display = 'block';
+  }
+  navMenuStates.pageNavOpened = false;
+}
+
 function togglePageNav() {
   if (!navMenuStates.pageNavOpened) {
     document.getElementById('page-nav').classList.add('nav-menu-open');
@@ -25,15 +34,6 @@ function togglePageNav() {
   } else {
     closePageNav();
   }
-}
-
-function closePageNav() {
-  document.getElementById('page-nav').classList.remove('nav-menu-open');
-  document.getElementById('toggle-page-nav-button').classList.remove('nav-menu-close-icon');
-  if (navMenuStates.siteNav) {
-    document.getElementById('toggle-site-nav-button').style.display = 'block';
-  }
-  navMenuStates.pageNavOpened = false;
 }
 
 function initSiteNavButton() {
