@@ -1,31 +1,34 @@
 <template>
-  <nav ref="navbar" :class="['navbar', 'navbar-expand-md', themeOptions, addClass, fixedOptions]">
-    <div class="container-fluid">
-      <div class="navbar-brand">
-        <slot name="brand"></slot>
-      </div>
-      <button
-        v-if="!slots.collapse"
-        class="navbar-toggler"
-        type="button"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        @click="toggleCollapse"
-      >
-        <span class="navbar-toggler-icon"></span>
-        <slot name="collapse"></slot>
-      </button>
+  <div>
+    <nav ref="navbar" :class="['navbar', 'navbar-expand-md', themeOptions, addClass, fixedOptions]">
+      <div class="container-fluid">
+        <div class="navbar-brand">
+          <slot name="brand"></slot>
+        </div>
+        <button
+          v-if="!slots.collapse"
+          class="navbar-toggler"
+          type="button"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          @click="toggleCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+          <slot name="collapse"></slot>
+        </button>
 
-      <div :class="['navbar-collapse',{collapse:collapsed}]">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <slot></slot>
-        </ul>
-        <ul v-if="slots.right" class="navbar-nav navbar-right">
-          <slot name="right"></slot>
-        </ul>
+        <div :class="['navbar-collapse',{collapse:collapsed}]">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <slot></slot>
+          </ul>
+          <ul v-if="slots.right" class="navbar-nav navbar-right">
+            <slot name="right"></slot>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+    <slot name="lower-navbar"></slot>
+  </div>
 </template>
 
 <script>

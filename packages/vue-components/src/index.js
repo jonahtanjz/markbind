@@ -26,6 +26,8 @@ import tipBox from './TipBox.vue';
 import trigger from './Trigger.vue';
 import siteNav from './SiteNav.vue';
 import submenu from './Submenu.vue';
+import siteNavButton from './SiteNavButton.vue';
+import pageNavButton from './PageNavButton.vue';
 
 const components = {
   box: tipBox,
@@ -46,6 +48,8 @@ const components = {
   trigger,
   siteNav,
   submenu,
+  siteNavButton,
+  pageNavButton,
 };
 
 const directives = {
