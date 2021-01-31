@@ -30,6 +30,9 @@
   <script src="/test_site/headFiles/customScriptBottom.js"></script>
   <link rel="icon" href="/test_site/favicon.png">
 </head>
+<script>
+  const baseUrl = '/test_site'
+</script>
 
 <body data-spy="scroll" data-target="#mb-page-nav" data-offset="100">
   <div id="app">
@@ -410,8 +413,9 @@
               <pic src="https://dummyimage.com/600x400/000/fff"></pic>
             </p>
             <p>Anchor:
-              <a href="https://dummyimage.com/600x400/000/fff">External Image</a>
-              <a href="/test_site/sub_site/images/I'm not allowed to use my favorite tool.png">Link to picture</a>
+              <a href="https://dummyimage.com/600x400/000/fff">External Image</a></p>
+
+            <p><a href="/test_site/sub_site/images/I'm%20not%20allowed%20to%20use%20my%20favorite%20tool.png">Link to picture</a>
               <a id="namedAnchor">Named Anchor</a>
               <a>Anchor with no attributes</a></p>
             <p>Within DIV tag:</p>
@@ -769,7 +773,6 @@
 </body>
 <script src="markbind/js/bootstrap-utility.min.js"></script>
 <script>
-  const baseUrl = '/test_site'
   MarkBind.setupWithSearch()
 </script>
 <script src="/test_site/plugins/testMarkbindPlugin/testMarkbindPluginScript.js"></script>
@@ -788,9 +791,6 @@
   gtag('js', new Date());
 
   gtag('config', 'TRACKING-ID');
-</script>
-<script>
-  if (MarkBind.AfterSetup) MarkBind.AfterSetup()
 </script>
 
 </html>
