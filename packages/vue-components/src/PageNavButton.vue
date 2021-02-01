@@ -20,11 +20,24 @@ export default {
     },
   },
   mounted() {
+    const buildPageNavMenu = (pageNav) => {
+      const pageNavMenu = this.$refs.pageNavMenu;
+      for (let i = 0; i < pageNav.childNodes.length; i++) {
+        pageNavMenu.appendChild(pageNav.childNodes[i].cloneNode(true));
+      }
+    };
     const $el = $(this.$refs.pageNavMenu);
-    const pageNavMenu = this.$refs.pageNavMenu;
-    const pageNav = document.getElementById("page-nav");
-    for (let i = 0; i < pageNav.childNodes.length; i++) {
-      pageNavMenu.appendChild(pageNav.childNodes[i].cloneNode(true));
+    const pageNav = document.getElementById("page-nav"); 
+
+    if (pageNav !== null) {
+      buildPageNavMenu(pageNav);
+    } else {
+      const wrapper = document.createElement("div");
+      const pageNavTitle = document.getElementsByClassName("page-nav-title")[0];
+      const pageNavLinks = document.getElementById("mb-page-nav");
+      wrapper.appendChild(pageNavTitle.cloneNode(true));
+      wrapper.appendChild(pageNavLinks.cloneNode(true));
+      buildPageNavMenu(wrapper);
     }
     $el.find('a').on('click', (e) => {
       this.togglePageNav();

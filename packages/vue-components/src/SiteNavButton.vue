@@ -21,9 +21,11 @@ export default {
   },
   mounted() {
     const el = this.$refs.siteNavMenu;
-    const siteNav = document.getElementById("site-nav");
-    for (let i = 0; i < siteNav.childNodes.length; i++) {
-      el.appendChild(siteNav.childNodes[i].cloneNode(true));
+    const siteNav = document.getElementById("site-nav") || document.getElementsByClassName("site-nav-root")[0];
+    if (siteNav !== undefined) {
+      for (let i = 0; i < siteNav.childNodes.length; i++) {
+        el.appendChild(siteNav.childNodes[i].cloneNode(true));
+      }
     }
   },
 };
