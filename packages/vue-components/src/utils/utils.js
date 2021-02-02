@@ -1,3 +1,5 @@
+import { BIconFileEarmarkSpreadsheet } from "bootstrap-vue";
+
 // coerce convert som types of data into another type
 export const coerce = {
   // Convert a string to booleam. Otherwise, return the value without modification, so if is not boolean, Vue throw a warning.
@@ -158,4 +160,41 @@ export function VueFixer (vue) {
   if (!vue.mixins) { vue.mixins = [] }
   vue.mixins.unshift(mixin)
   return vue
+}
+
+export function resizeHeader(isNavMenuShowing) {
+  const elements = ['.fixed-header-padding', 'span.anchor', 'span.card-container::before'];
+  const headerHeight = document.querySelector("header[fixed]").offsetHeight;
+  for (const element of elements) {
+    const selectedElements = document.querySelectorAll(element);
+    for (const selectedElement of selectedElements) {
+      if (isNavMenuShowing) {
+        switch (element) {
+          case elements[0]:
+            selectedElement.style.setProperty('padding-top', `${headerHeight}px`, 'important');
+            break;
+          case elements[1]:
+            selectedElement.style.setProperty('top', `calc(-${headerHeight}px - 1rem)`);
+            break;
+          case elements[2]:
+            selectedElement.style.setProperty('margin-top', `calc(-${headerHeight}px - 1rem)`);
+            selectedElement.style.setProperty('height', `calc(${headerHeight}px + 1rem)`);
+            break;
+        }
+      } else {
+        switch (element) {
+          case elements[0]:
+            selectedElement.style.removeProperty('padding-top');
+            break;
+          case elements[1]:
+            selectedElement.style.removeProperty('top');
+            break;
+          case elements[2]:
+            selectedElement.style.removeProperty('margin-top');
+            selectedElement.style.removeProperty('height');
+            break;
+        }
+      }
+    }
+  }
 }

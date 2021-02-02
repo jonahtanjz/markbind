@@ -67,7 +67,7 @@ function renderSiteNav(node) {
   });
 
   $original.empty();
-  $original.append($('site-nav').children()).append('<script>initSiteNavButton();</script>');
+  $original.append($('site-nav').children());
 }
 
 module.exports = {

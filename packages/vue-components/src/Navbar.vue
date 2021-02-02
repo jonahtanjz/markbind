@@ -1,36 +1,46 @@
 <template>
-  <nav ref="navbar" :class="['navbar', 'navbar-expand-md', themeOptions, addClass, fixedOptions]">
-    <div class="container-fluid">
-      <div class="navbar-brand">
-        <slot name="brand"></slot>
-      </div>
-      <button
-        v-if="!slots.collapse"
-        class="navbar-toggler"
-        type="button"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        @click="toggleCollapse"
-      >
-        <span class="navbar-toggler-icon"></span>
-        <slot name="collapse"></slot>
-      </button>
+  <div ref="navbarContainer">
+    <nav ref="navbar" :class="['navbar', 'navbar-expand-md', themeOptions, addClass, fixedOptions]">
+      <div class="container-fluid">
+        <div class="navbar-brand">
+          <slot name="brand"></slot>
+        </div>
+        <button
+          v-if="!slots.collapse"
+          class="navbar-toggler"
+          type="button"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          @click="toggleCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+          <slot name="collapse"></slot>
+        </button>
 
-      <div :class="['navbar-collapse',{collapse:collapsed}]">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <slot></slot>
-        </ul>
-        <ul v-if="slots.right" class="navbar-nav navbar-right">
-          <slot name="right"></slot>
-        </ul>
+        <div :class="['navbar-collapse',{collapse:collapsed}]">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <slot></slot>
+          </ul>
+          <ul v-if="slots.right" class="navbar-nav navbar-right">
+            <slot name="right"></slot>
+          </ul>
+        </div>
       </div>
+    </nav>
+    <div v-show="isNavMenuShowing">
+      <slot name="lower-navbar">
+        <div class="nav-menu-container">
+          <site-nav-button />
+          <page-nav-button />
+        </div>
+      </slot>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
 import $ from './utils/NodeList.js';
-import { toBoolean } from './utils/utils';
+import { toBoolean, resizeHeader } from './utils/utils';
 import normalizeUrl from './utils/urls';
 
 export default {
@@ -52,11 +62,20 @@ export default {
       default: 'sibling-or-child',
     },
   },
+  provide() { 
+    return {
+      initSiteNav: this.initSiteNav,
+      initPageNav: this.initPageNav,
+    };
+  },
   data() {
     return {
       id: 'bs-example-navbar-collapse-1',
       collapsed: true,
       styles: {},
+      hasSiteNav: false,
+      hasPageNav: false,
+      isNavMenuShowing: false,
     };
   },
   computed: {
@@ -198,6 +217,33 @@ export default {
         }
       }
     },
+    initSiteNav() {
+      this.hasSiteNav = true;
+      this.toggleNavMenu();
+    },
+    initPageNav() {
+      this.hasPageNav = true;
+      this.toggleNavMenu();
+    },
+    showNavMenu() {
+      this.isNavMenuShowing = true;
+    },
+    hideNavMenu() {
+      this.isNavMenuShowing = false;
+    },
+    toggleNavMenu() {
+      if ((this.hasPageNav && window.innerWidth < 1300) 
+        || (this.hasSiteNav && window.innerWidth < 992)) {
+        this.showNavMenu();
+      } else {
+        this.hideNavMenu();
+      }
+    },
+  },
+  watch: {
+    isNavMenuShowing: function (newValue) {
+      setTimeout(() => resizeHeader(newValue), 200);
+    }
   },
   created() {
     this._navbar = true;
@@ -228,10 +274,15 @@ export default {
 
     // highlight current nav link
     this.highlightLink(window.location.href);
+
+    $(window).on('resize', (e) => {
+      this.toggleNavMenu();
+    }); 
   },
   beforeDestroy() {
     $('.dropdown', this.$el).off('click').offBlur();
     if (this.slots.collapse) $('[data-toggle="collapse"]', this.$el).off('click');
+    $(window).off();
   },
 };
 </script>
