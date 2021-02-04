@@ -28,6 +28,7 @@ import siteNav from './SiteNav.vue';
 import submenu from './Submenu.vue';
 import siteNavButton from './SiteNavButton.vue';
 import pageNavButton from './PageNavButton.vue';
+import overlay from './Overlay.vue';
 
 const components = {
   box: tipBox,
@@ -50,6 +51,7 @@ const components = {
   submenu,
   siteNavButton,
   pageNavButton,
+  overlay,
 };
 
 const directives = {

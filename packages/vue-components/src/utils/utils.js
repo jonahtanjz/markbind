@@ -1,5 +1,3 @@
-import { BIconFileEarmarkSpreadsheet } from "bootstrap-vue";
-
 // coerce convert som types of data into another type
 export const coerce = {
   // Convert a string to booleam. Otherwise, return the value without modification, so if is not boolean, Vue throw a warning.

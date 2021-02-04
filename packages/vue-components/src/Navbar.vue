@@ -1,5 +1,5 @@
 <template>
-  <div ref="navbarContainer">
+  <div>
     <nav ref="navbar" :class="['navbar', 'navbar-expand-md', themeOptions, addClass, fixedOptions]">
       <div class="container-fluid">
         <div class="navbar-brand">
@@ -243,7 +243,7 @@ export default {
   watch: {
     isNavMenuShowing: function (newValue) {
       setTimeout(() => resizeHeader(newValue), 200);
-    }
+    },
   },
   created() {
     this._navbar = true;
@@ -274,10 +274,6 @@ export default {
 
     // highlight current nav link
     this.highlightLink(window.location.href);
-
-    $(window).on('resize', (e) => {
-      this.toggleNavMenu();
-    }); 
   },
   beforeDestroy() {
     $('.dropdown', this.$el).off('click').offBlur();

@@ -24,12 +24,20 @@
     padding-top: 50px;
 }
 
+.nav-menu-close-icon {
+    background: #fff;
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+}
+
 .nav-menu-close-icon::before {
     content: "\e014" !important;
 }
 
 .nav-menu-open {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column !important;
     width: 100% !important;
     max-width: 100% !important;
     background: #fff;

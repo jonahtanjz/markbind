@@ -5,7 +5,14 @@
       :class="['glyphicon', { 'nav-menu-close-icon': show }]"
       @click="togglePageNav"
     ></span>
-    <div ref="pageNavMenu" :class="['page-nav-menu', { 'nav-menu-open': show }]"></div>
+    <div ref="pageNavMenu" :class="['page-nav-menu', { 'nav-menu-open': show }]">
+      <overlay
+        :type="'pageNav'"
+        :src="src"
+        :fragment="'page-nav'"
+        :hasIdentifier="hasIdentifier"
+      />
+    </div>
   </div>
 </template>
 
@@ -16,7 +23,9 @@ export default {
   data() {
     return {
       hasPageNav: false,
+      hasIdentifier: false,
       show: false,
+      src: '',
     };
   },
   inject: ['initPageNav'],
@@ -37,33 +46,17 @@ export default {
     },
   },
   mounted() {
-    const buildPageNavMenu = (pageNavItems) => {
-      this.initPageNav();
-      this.hasPageNav = true;
-      const { pageNavMenu } = this.$refs;
-      for (let i = 0; i < pageNavItems.childNodes.length; i += 1) {
-        pageNavMenu.appendChild(pageNavItems.childNodes[i].cloneNode(true));
-      }
-    };
-
     const $el = $(this.$refs.pageNavMenu);
     const pageNav = document.getElementById('page-nav');
+    this.src = window.location.pathname;
 
     if (pageNav !== null) {
-      buildPageNavMenu(pageNav);
-    } else {
-      const wrapper = document.createElement('div');
-      const pageNavTitle = document.getElementsByClassName('page-nav-title')[0];
-      const pageNavLinks = document.getElementById('mb-page-nav');
-      if (pageNavTitle) {
-        wrapper.appendChild(pageNavTitle.cloneNode(true));
-      }
-      if (pageNavLinks) {
-        wrapper.appendChild(pageNavLinks.cloneNode(true));
-      }
-      if (wrapper.hasChildNodes()) {
-        buildPageNavMenu(wrapper);
-      }
+      this.initPageNav();
+      this.hasPageNav = true;
+      this.hasIdentifier = true;
+    } else if (document.getElementsByClassName('page-nav-title')[0].length !== 0) {
+      this.initPageNav();
+      this.hasPageNav = true;
     }
 
     $el.find('a').on('click', () => {
@@ -82,6 +75,7 @@ export default {
         display: none;
         padding: 0 10px;
         position: fixed;
+        top: 0;
         z-index: 1000;
     }
 

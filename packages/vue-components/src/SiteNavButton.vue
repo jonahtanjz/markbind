@@ -5,18 +5,31 @@
       :class="['glyphicon', { 'nav-menu-close-icon': show }]"
       @click="toggleSiteNav"
     ></span>
-    <div ref="siteNavMenu" :class="['site-nav-menu', { 'nav-menu-open': show }]"></div>
+    <div ref="siteNavMenu" :class="['site-nav-menu', { 'nav-menu-open': show }]">
+      <overlay
+        :type="'siteNav'"
+        :src="src"
+        :fragment="'site-nav'"
+        :hasIdentifier="hasIdentifier"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import retriever from './Retriever.vue';
 import $ from './utils/NodeList';
 
 export default {
+  components: {
+    retriever,
+  },
   data() {
     return {
+      hasIdentifier: false,
       hasSiteNav: false,
       show: false,
+      src: '',
     };
   },
   inject: ['initSiteNav'],
@@ -39,10 +52,14 @@ export default {
   mounted() {
     const $el = $(this.$refs.siteNavMenu);
     const { siteNavMenu } = this.$refs;
-    const siteNav = document.getElementById('site-nav')
-      || document.getElementsByClassName('site-nav-root')[0];
+    this.src = window.location.pathname;
 
-    if (siteNav) {
+    if (document.getElementById('site-nav') !== null) {
+      this.initSiteNav();
+      this.hasSiteNav = true;
+      this.hasIdentifier = true;
+    } else if (document.getElementsByClassName('site-nav-root').length !== 0) { 
+      const siteNav = document.getElementsByClassName('site-nav-root')[0];
       this.initSiteNav();
       this.hasSiteNav = true;
       for (let i = 0; i < siteNav.childNodes.length; i += 1) {
@@ -64,8 +81,10 @@ export default {
 <style scoped>
     .site-nav-menu {
         display: none;
-        padding: 0 10px;
+        padding: 0 10px 20px;
         position: fixed;
+        top: 0;
+        overflow-y: scroll;
         z-index: 1000;
     }
 
