@@ -27,12 +27,10 @@
         </div>
       </div>
     </nav>
-    <div v-show="isNavMenuShowing">
+    <div ref="lowerNavbar" v-show="isNavMenuShowing" class="nav-menu-container">
       <slot name="lower-navbar">
-        <div class="nav-menu-container">
           <site-nav-button />
           <page-nav-button />
-        </div>
       </slot>
     </div>
   </div>
@@ -62,10 +60,9 @@ export default {
       default: 'sibling-or-child',
     },
   },
-  provide() { 
+  provide() {
     return {
-      initSiteNav: this.initSiteNav,
-      initPageNav: this.initPageNav,
+      toggleLowerNavbar: this.toggleNavMenu,
     };
   },
   data() {
@@ -73,8 +70,6 @@ export default {
       id: 'bs-example-navbar-collapse-1',
       collapsed: true,
       styles: {},
-      hasSiteNav: false,
-      hasPageNav: false,
       isNavMenuShowing: false,
     };
   },
@@ -217,14 +212,6 @@ export default {
         }
       }
     },
-    initSiteNav() {
-      this.hasSiteNav = true;
-      this.toggleNavMenu();
-    },
-    initPageNav() {
-      this.hasPageNav = true;
-      this.toggleNavMenu();
-    },
     showNavMenu() {
       this.isNavMenuShowing = true;
     },
@@ -232,8 +219,7 @@ export default {
       this.isNavMenuShowing = false;
     },
     toggleNavMenu() {
-      if ((this.hasPageNav && window.innerWidth < 1300) 
-        || (this.hasSiteNav && window.innerWidth < 992)) {
+      if (this.$refs.lowerNavbar.childElementCount > 0) {
         this.showNavMenu();
       } else {
         this.hideNavMenu();
@@ -274,6 +260,8 @@ export default {
 
     // highlight current nav link
     this.highlightLink(window.location.href);
+
+    $(window).on('resize', this.toggleNavMenu);
   },
   beforeDestroy() {
     $('.dropdown', this.$el).off('click').offBlur();
@@ -301,5 +289,15 @@ export default {
   >>> .dropdown-current {
     color: #fff !important;
     background: #007bff;
+  }
+
+  .nav-menu-container {
+    background-color: #fff;
+    border-bottom: 1px solid #c1c1c1;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    padding-top: 1px;
+    z-index: 1001;
   }
 </style>
