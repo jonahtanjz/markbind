@@ -1,5 +1,5 @@
 <template>
-  <overlay v-if="show"
+  <overlay v-if="showPageNav"
     :type="'pageNav'"
     :src="src"
     :fragment="'page-nav'"
@@ -17,6 +17,11 @@ export default {
       src: '',
     };
   },
+  computed: {
+    showPageNav() {
+      return this.show && this.hasPageNav;
+    }
+  },
   methods: {
     toggleNavMenuButton() {
       if (window.innerWidth < 1300) {
@@ -29,12 +34,9 @@ export default {
   mounted() {
     this.src = window.location.pathname;
     this.hasIdentifier = document.getElementById('page-nav') !== null;
+    this.hasPageNav = document.getElementById('mb-page-nav') !== null;
     this.toggleNavMenuButton();
     $(window).on('resize', this.toggleNavMenuButton);
   },
 };
 </script>
-
-<style scoped>
-
-</style>

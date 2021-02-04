@@ -1,5 +1,5 @@
 <template>
-  <overlay v-if="show"
+  <overlay v-if="showSiteNav"
     :type="'siteNav'"
     :src="src"
     :fragment="'site-nav'"
@@ -26,15 +26,17 @@ export default {
       }
     }
   },
+  computed: {
+    showSiteNav() {
+      return this.show && this.hasSiteNav;
+    }
+  },
   mounted() {
     this.src = window.location.pathname;
     this.hasIdentifier = document.getElementById("site-nav") !== null;
+    this.hasSiteNav = document.getElementsByClassName('site-nav-root').length !== 0;
     this.toggleNavMenuButton();
     $(window).on('resize', this.toggleNavMenuButton);
   },
 };
 </script>
-
-<style scoped>
-    
-</style>

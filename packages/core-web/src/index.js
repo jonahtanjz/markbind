@@ -50,6 +50,35 @@ function detectAndApplyFixedHeaderStyles() {
         margin-top: calc(-${headerHeight}px - ${bufferHeight}rem);
         height: calc(${headerHeight}px + ${bufferHeight}rem);
       }`);
+  insertCss(`.nav-menu-open { max-height: calc(100% - ${headerHeight}px); }`);    
+}
+
+function addResizeHeaderListener() {
+  const headerSelector = jQuery('header[fixed]');
+  const bufferHeight = 1;
+  const resizeObserver = new ResizeObserver(() => {
+    const headerHeight = headerSelector.height();
+    const sheets = document.styleSheets;
+    for (let i in sheets) {
+      const rules = sheets[i].cssRules;
+      if (rules && rules[0] && rules[0].selectorText) {
+        switch (rules[0].selectorText) {
+          case '.fixed-header-padding':
+            sheets[i].deleteRule(0);
+            sheets[i].insertRule(`.fixed-header-padding { padding-top: ${headerHeight}px !important }`);
+            break;
+          case 'span.anchor':
+            rules[0].style.top = `calc(-${headerHeight}px - ${bufferHeight}rem)`;
+            break;
+          case 'span.card-container::before':
+            rules[0].style.marginTop = `calc(-${headerHeight}px - ${bufferHeight}rem)`;
+            rules[0].style.height = `calc(${headerHeight}px + ${bufferHeight}rem)`;
+            break;
+        }
+      }
+    }
+  });
+  resizeObserver.observe(document.querySelector('header'));
 }
 
 function updateSearchData(vm) {
@@ -72,6 +101,7 @@ function executeAfterCreatedRoutines() {
 function executeAfterMountedRoutines() {
   scrollToUrlAnchorHeading();
   detectAndApplyFixedHeaderStyles();
+  addResizeHeaderListener();
 }
 
 window.handleSiteNavClick = function (elem, useAnchor = true) {

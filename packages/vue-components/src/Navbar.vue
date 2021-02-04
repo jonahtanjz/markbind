@@ -27,7 +27,7 @@
         </div>
       </div>
     </nav>
-    <div ref="lowerNavbar" v-show="isNavMenuShowing" class="nav-menu-container">
+    <div ref="lowerNavbar" v-show="isLowerNavbarShowing" class="lower-navbar-container">
       <slot name="lower-navbar">
           <site-nav-button />
           <page-nav-button />
@@ -38,7 +38,7 @@
 
 <script>
 import $ from './utils/NodeList.js';
-import { toBoolean, resizeHeader } from './utils/utils';
+import { toBoolean } from './utils/utils';
 import normalizeUrl from './utils/urls';
 
 export default {
@@ -62,7 +62,7 @@ export default {
   },
   provide() {
     return {
-      toggleLowerNavbar: this.toggleNavMenu,
+      toggleLowerNavbar: this.toggleLowerNavbar,
     };
   },
   data() {
@@ -70,7 +70,7 @@ export default {
       id: 'bs-example-navbar-collapse-1',
       collapsed: true,
       styles: {},
-      isNavMenuShowing: false,
+      isLowerNavbarShowing: false,
     };
   },
   computed: {
@@ -212,23 +212,12 @@ export default {
         }
       }
     },
-    showNavMenu() {
-      this.isNavMenuShowing = true;
-    },
-    hideNavMenu() {
-      this.isNavMenuShowing = false;
-    },
-    toggleNavMenu() {
+    toggleLowerNavbar() {
       if (this.$refs.lowerNavbar.childElementCount > 0) {
-        this.showNavMenu();
+        this.isLowerNavbarShowing = true;
       } else {
-        this.hideNavMenu();
+        this.isLowerNavbarShowing = false;
       }
-    },
-  },
-  watch: {
-    isNavMenuShowing: function (newValue) {
-      setTimeout(() => resizeHeader(newValue), 200);
     },
   },
   created() {
@@ -261,7 +250,8 @@ export default {
     // highlight current nav link
     this.highlightLink(window.location.href);
 
-    $(window).on('resize', this.toggleNavMenu);
+    this.toggleLowerNavbar();
+    $(window).on('resize', this.toggleLowerNavbar);
   },
   beforeDestroy() {
     $('.dropdown', this.$el).off('click').offBlur();
@@ -291,13 +281,11 @@ export default {
     background: #007bff;
   }
 
-  .nav-menu-container {
+  .lower-navbar-container {
     background-color: #fff;
     border-bottom: 1px solid #c1c1c1;
     height: 50px;
     width: 100%;
     position: relative;
-    padding-top: 1px;
-    z-index: 1001;
   }
 </style>
